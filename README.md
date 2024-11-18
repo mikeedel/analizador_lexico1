@@ -5,9 +5,13 @@ Este proyecto implementa un **analizador léxico y sintáctico** utilizando las 
 Makefile:
 
 lex ex.l
+
 gcc lex.yy.c -o example
+
 ./example input
 
 yacc -d syntaxis.y
+
 gcc y.tab.c lex.yy.c -o parser -std=gnu99
+
 ./parser tokens.out
