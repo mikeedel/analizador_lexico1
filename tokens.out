@@ -1,0 +1,16 @@
+COMMENT 
+
+COMMENT 
+floatdcl id 
+
+COMMENT 
+intdcl id 
+
+COMMENT 
+id assign inum 
+
+COMMENT 
+id assign id plus fnum 
+
+COMMENT 
+print id 
