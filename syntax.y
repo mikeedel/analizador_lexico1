@@ -38,12 +38,13 @@ void writeEdge(char* from, char* to) {
 }
 
 void getNodeOrder(int currentNode, int* visited, int* order, int* orderIndex) {
+    int i;
     if (visited[currentNode]) return;
     visited[currentNode] = 1;
 
     order[(*orderIndex)++] = currentNode;
     
-    for (int i = 0; i < edge_count; i++) {
+    for (i = 0; i < edge_count; i++) {
         if (edges[i].from == currentNode) {
             getNodeOrder(edges[i].to, visited, order, orderIndex);
         }
@@ -51,38 +52,39 @@ void getNodeOrder(int currentNode, int* visited, int* order, int* orderIndex) {
 }
 
 void startTree() {
+    int i;
+    int rootNode = -1;
+    int isChild[100] = {0};
+    int visited[100] = {0};
+    int order[100];
+    int orderIndex = 0;
+
     if (tree_count > 0) {
-        int rootNode = -1;
-        int isChild[100] = {0};
-        for (int i = 0; i < edge_count; i++) {
+        for (i = 0; i < edge_count; i++) {
             isChild[edges[i].to] = 1;
         }
-        for (int i = 0; i < node_count; i++) {
+        for (i = 0; i < node_count; i++) {
             if (!isChild[i]) {
                 rootNode = i;
                 break;
             }
         }
-        
-        int visited[100] = {0};
-        int order[100];
-        int orderIndex = 0;
-        
+
         getNodeOrder(rootNode, visited, order, &orderIndex);
-        
+
         printf("digraph Tree%d {\n  node [shape=box];\n", tree_count - 1);
-        
-        for (int i = 0; i < orderIndex; i++) {
+
+        for (i = 0; i < orderIndex; i++) {
             printf("  node%d [label=\"%s\"];\n", order[i], labels[order[i]]);
         }
-        
-        for (int i = 0; i < edge_count; i++) {
+
+        for (i = 0; i < edge_count; i++) {
             printf("  node%d -> node%d;\n", edges[i].from, edges[i].to);
         }
-        
+
         printf("}\n\n");
     }
-    
+
     tree_count++;
     node_count = 0;
     edge_count = 0;
@@ -218,12 +220,20 @@ void yyerror(char const *s) {
 }
 
 int main(int argc, char **argv) {
+    FILE *inputFile;
+    int rootNode = -1;
+    int isChild[100] = {0};
+    int visited[100] = {0};
+    int order[100];
+    int orderIndex = 0;
+    int i;
+
     if (argc < 2) {
         fprintf(stderr, "Uso: %s <archivo de entrada>\n", argv[0]);
         return 1;
     }
 
-    FILE *inputFile = fopen(argv[1], "r");
+    inputFile = fopen(argv[1], "r");
     if (!inputFile) {
         perror("Error al abrir el archivo de entrada");
         return 1;
@@ -234,29 +244,23 @@ int main(int argc, char **argv) {
     startTree();
     yyparse();
     
-    int rootNode = -1;
-    int isChild[100] = {0};
-    for (int i = 0; i < edge_count; i++) {
+    for (i = 0; i < edge_count; i++) {
         isChild[edges[i].to] = 1;
     }
-    for (int i = 0; i < node_count; i++) {
+    for (i = 0; i < node_count; i++) {
         if (!isChild[i]) {
             rootNode = i;
             break;
         }
     }
-    
-    int visited[100] = {0};
-    int order[100];
-    int orderIndex = 0;
-    
+
     getNodeOrder(rootNode, visited, order, &orderIndex);
     
-    for (int i = 0; i < orderIndex; i++) {
+    for (i = 0; i < orderIndex; i++) {
         printf("  node%d [label=\"%s\"];\n", order[i], labels[order[i]]);
     }
     
-    for (int i = 0; i < edge_count; i++) {
+    for (i = 0; i < edge_count; i++) {
         printf("  node%d -> node%d;\n", edges[i].from, edges[i].to);
     }
     
