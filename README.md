@@ -10,7 +10,7 @@ gcc lex.yy.c -o example
 
 ./example input
 
-yacc -d syntaxis.y
+yacc -d syntax.y
 
 gcc y.tab.c lex.yy.c -o parser 
  
