@@ -12,6 +12,6 @@ gcc lex.yy.c -o example
 
 yacc -d syntaxis.y
 
-gcc y.tab.c lex.yy.c -o parser -std=gnu99
-
+gcc y.tab.c lex.yy.c -o parser -std=gnu99    ++++   agregar  -std=gnu99  es indispensable ++++
+ 
 ./parser tokens.out
